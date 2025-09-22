@@ -9,18 +9,18 @@ import static uk.gov.companieshouse.requestrefund.consumer.Application.NAMESPACE
 import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
+
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.payments.RefundRequest;
-import uk.gov.companieshouse.requestrefund.consumer.exception.NonRetryableException;
-import uk.gov.companieshouse.requestrefund.consumer.exception.RetryableException;
+import uk.gov.companieshouse.requestrefund.consumer.Util;
 
 @Component
 @Aspect
@@ -29,13 +29,6 @@ class LoggingKafkaListenerAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
     private static final String LOG_MESSAGE_RECEIVED = "Processing Refund Request";
     private static final String LOG_MESSAGE_PROCESSED = "Processed Refund Request";
-    private static final String EXCEPTION_MESSAGE = "%s exception thrown";
-
-    private final int maxAttempts;
-
-    LoggingKafkaListenerAspect(@Value("${consumer.max-attempts}") int maxAttempts) {
-        this.maxAttempts = maxAttempts;
-    }
 
     @Around("@annotation(org.springframework.kafka.annotation.KafkaListener)")
     public Object manageStructuredLogging(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -48,7 +41,9 @@ class LoggingKafkaListenerAspect {
             retryCount = Optional.ofNullable(headers.get(DEFAULT_HEADER_ATTEMPTS))
                     .map(attempts -> ByteBuffer.wrap((byte[]) attempts).getInt())
                     .orElse(1) - 1;
-            RefundRequest refundRequest = extractRefundRequest(message.getPayload());
+            RefundRequest refundRequest = Util.extractRefundRequest(message.getPayload());
+
+            //TODO: should this not generate a random string if unknown
             DataMapHolder.initialise(Optional.ofNullable(refundRequest.getRefundReference())
                     .orElse(UUID.randomUUID().toString()));
 
@@ -65,28 +60,11 @@ class LoggingKafkaListenerAspect {
             LOGGER.info(LOG_MESSAGE_PROCESSED, DataMapHolder.getLogMap());
 
             return result;
-        } catch (RetryableException ex) {
-            // maxAttempts includes first attempt which is not a retry
-            if (retryCount >= maxAttempts - 1) {
-                LOGGER.error("Max retry attempts reached", ex, DataMapHolder.getLogMap());
-            } else {
-                LOGGER.info(EXCEPTION_MESSAGE.formatted(ex.getClass().getSimpleName()), DataMapHolder.getLogMap());
-            }
-            throw ex;
         } catch (Exception ex) {
             LOGGER.error("Exception thrown", ex, DataMapHolder.getLogMap());
             throw ex;
         } finally {
             DataMapHolder.clear();
         }
-    }
-
-    private RefundRequest extractRefundRequest(Object payload) {
-        if (payload instanceof RefundRequest refundRequest) {
-            return refundRequest;
-        }
-        String errorMessage = "Invalid payload type, payload: [%s]".formatted(payload.toString());
-        LOGGER.error(errorMessage, DataMapHolder.getLogMap());
-        throw new NonRetryableException(errorMessage);
     }
 }

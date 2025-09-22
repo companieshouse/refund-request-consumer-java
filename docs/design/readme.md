@@ -6,11 +6,8 @@ The Consumer reads from the refund-request-consumer topic and deserilses the dat
   * RefundAmount
   * RefundReference
 
-The payment /payments/{paymentId}/refunds"
-The refund request data is then
+Once a message is successfully read from the topic a POST request is made to the payments API `/payments/{paymentId}/refunds`
 
-
-1. Read message from topic
-2. Process it
-  a. If successful send POST request to `/payments/{paymentId}/refunds` with a body containing two variables, the amount and the refund reference.,
-3. If processing fails then add the
+# Diagrams
+## Activity
+![image info](./activity.png)

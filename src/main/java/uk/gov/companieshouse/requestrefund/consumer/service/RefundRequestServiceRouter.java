@@ -15,7 +15,6 @@ public class RefundRequestServiceRouter {
     }
 
     public void route(RefundRequest json) {
-        System.out.println("Routing refund request: " + json);
         paymentRefundApiClient.createPaymentRefundRequest(json);
     }
 }

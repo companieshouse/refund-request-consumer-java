@@ -92,7 +92,7 @@ public class KafkaConfig {
             @Value("${consumer.backoff-delay}") int delay) {
         return RetryTopicConfigurationBuilder
                 .newInstance()
-                .doNotAutoCreateRetryTopics() // this is necessary to prevent failing connection during loading of spring app context
+                .doNotAutoCreateRetryTopics()
                 .maxAttempts(attempts)
                 .fixedBackOff(delay)
                 .useSingleTopicForSameIntervals()

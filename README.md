@@ -12,7 +12,7 @@ In order to run the service locally you will need the following:
 ## Getting started
 To checkout and build the service:
 1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and follow the steps in the README.
-2. Run ./bin/chs-dev services enable refund-request-consumer-java chs-kafka-schemas kafka zookeeper
+2. Run ./bin/chs-dev services enable refund-request-consumer-java kafka3 zookeeper-kafka3
 3. Run ./bin/chs-dev development enable refund-request-consumer-java if you wish to see changes in the code
 4. TODO - add how to use the [tool](https://github.com/companieshouse/chs-tools/tree/add_kafka_message_sender)
 
@@ -23,7 +23,6 @@ These instructions are for a local docker environment.
 | Variable                      | Description                                                                                     | Example (from docker-chs-development) |
 |-------------------------------|-------------------------------------------------------------------------------------------------|---------------------------------------|
 | PAYMENT_API.                  | The client ID of an API key, with internal app privileges, to call filing-history-data-api with | abc123def456ghi789                    |
-| API_LOCAL_URL                 | The host through which requests to the filing-history-data-api are sent                         | http://api.chs.local:4001             |
 | BOOTSTRAP_SERVER_URL          | The URL to the kafka broker                                                                     | kafka:9092                            |
 | CONCURRENT_LISTENER_INSTANCES | The number of listeners run in parallel for the consumer                                        | 1                                     |
 | FILING_HISTORY_DELTA_TOPIC    | The topic ID for filing history delta kafka topic                                               | refund-request                        |
@@ -34,14 +33,23 @@ These instructions are for a local docker environment.
 | HUMAN_LOG                     | A boolean value to enable more readable log messages                                            | 1                                     |
 | PORT                          | The port at which the service is hosted in ECS                                                  | 8080                                  |
 
-## Other useful Information
+# Error Handling
 
-### Design
+Two main types of exceptions are thrown:
+* RetryableException
+  * HTTP Responses (excluding 400 & 409)
+  * de-serialisation - InvalidPayloadException
+* NonRetryableException
+  * 400 HTTP Response
+  * 409 HTTP Response
+  * URI Validation Exception
 
 In the event of an error occurring while processing a message, the message will be placed into the refund-request-retry topic. If it continues to fail the message will be placed into a into the refund-request-error topic to be examined by FESS.
 
+## Design
+
 [design](./docs/design/readme.md)
 
-### Testing
+## Testing
 
 [Testing](./docs/testing/readme.md)
