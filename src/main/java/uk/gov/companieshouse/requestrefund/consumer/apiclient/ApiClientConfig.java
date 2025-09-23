@@ -17,7 +17,7 @@ public class ApiClientConfig {
             @Value("${api.api-url}") String apiUrl) {
         return () -> {
             InternalApiClient internalApiClient = new InternalApiClient(new ApiKeyHttpClient(apiKey));
-            internalApiClient.setBasePath(apiUrl);
+            internalApiClient.setBasePaymentsPath(apiUrl);
             return internalApiClient;
         };
     }
