@@ -1,12 +1,10 @@
 package uk.gov.companieshouse.requestrefund.consumer.kafka;
 
-import static org.springframework.kafka.retrytopic.RetryTopicHeaders.DEFAULT_HEADER_ATTEMPTS;
 import static org.springframework.kafka.support.KafkaHeaders.OFFSET;
 import static org.springframework.kafka.support.KafkaHeaders.RECEIVED_PARTITION;
 import static org.springframework.kafka.support.KafkaHeaders.RECEIVED_TOPIC;
 import static uk.gov.companieshouse.requestrefund.consumer.Application.NAMESPACE;
 
-import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,7 +18,6 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.payments.RefundRequest;
 import uk.gov.companieshouse.requestrefund.consumer.Util;
-import uk.gov.companieshouse.requestrefund.consumer.exception.NonRetryableException;
 import uk.gov.companieshouse.requestrefund.consumer.exception.RetryableException;
 import uk.gov.companieshouse.requestrefund.consumer.logging.DataMapHolder;
 import uk.gov.companieshouse.requestrefund.consumer.service.RefundRequestServiceRouter;

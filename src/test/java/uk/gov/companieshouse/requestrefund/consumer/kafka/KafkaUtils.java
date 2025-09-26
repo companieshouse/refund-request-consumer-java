@@ -16,7 +16,7 @@ final class KafkaUtils {
 
     static int noOfRecordsForTopic(ConsumerRecords<?, ?> records, String topic) {
         int count = 0;
-        for (ConsumerRecord<?, ?> ignored : records.records(topic)) {
+        for (@SuppressWarnings("unused") ConsumerRecord<?, ?> ignored : records.records(topic)) {
             count++;
         }
         return count;

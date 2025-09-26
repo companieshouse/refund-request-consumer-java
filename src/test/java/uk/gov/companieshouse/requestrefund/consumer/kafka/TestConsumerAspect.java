@@ -14,7 +14,7 @@ public class TestConsumerAspect {
     private final int steps;
     private CountDownLatch latch;
 
-    public TestConsumerAspect(@Value("${steps}") int steps) {
+    public TestConsumerAspect(@Value("${steps:1}") int steps) {
         this.steps = steps;
         this.latch = new CountDownLatch(steps);
     }

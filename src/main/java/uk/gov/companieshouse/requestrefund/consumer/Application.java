@@ -8,7 +8,7 @@ public class Application {
 
 	public static final String NAMESPACE = "refund-request-consumer";
 	public static void main(String[] args) {
-	SpringApplication.run(Application.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

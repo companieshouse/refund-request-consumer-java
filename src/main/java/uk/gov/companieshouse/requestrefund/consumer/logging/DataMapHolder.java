@@ -12,7 +12,7 @@ public class DataMapHolder {
         DATAMAP_BUILDER.get().requestId(requestId);
     }
 
-    private DataMapHolder() {}
+    DataMapHolder() {}
 
     public static void clear() {
         DATAMAP_BUILDER.remove();

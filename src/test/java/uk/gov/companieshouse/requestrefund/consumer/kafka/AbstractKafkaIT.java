@@ -19,5 +19,6 @@ public abstract class AbstractKafkaIT {
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry registry) {
         registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
+        System.out.println("Kafka bootstrap servers: " + kafka.getBootstrapServers());
     }
 }

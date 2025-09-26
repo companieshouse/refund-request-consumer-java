@@ -38,13 +38,13 @@ class ChsDeltaSerialiserTest {
         refundRequest.setRefundAmount("1.32");
         refundRequest.setRefundReference("INVALID_TOPIC");
 
-        RefundRequestSerializer serialiser = new RefundRequestSerializer();
+        try (RefundRequestSerializer serialiser = new RefundRequestSerializer()) {
+			// when
+			byte[] actual = serialiser.serialize("topic", refundRequest);
 
-        // when
-        byte[] actual = serialiser.serialize("topic", refundRequest);
-
-        // then
-        assertThat(actual, is(notNullValue()));
+			// then
+			assertThat(actual, is(notNullValue()));
+		}
     }
 
     @Test

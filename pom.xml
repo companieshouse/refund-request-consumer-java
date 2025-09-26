@@ -20,15 +20,12 @@
     <wiremock.version>3.13.1</wiremock.version>
     <skip.unit.tests>false</skip.unit.tests>
     <skip.integration.tests>false</skip.integration.tests>
-    <!--companies house-->
-    <structured-logging.version>unversioned</structured-logging.version>
-    <sdk-manager-java.version>3.0.12</sdk-manager-java.version>
+    <structured-logging.version>3.0.41</structured-logging.version>
+    <sdk-manager-java.version>3.0.13</sdk-manager-java.version>
     <private-api-sdk-java.version>unversioned</private-api-sdk-java.version>
     <kafka-models.version>unversioned</kafka-models.version>
-    <!--explicit versions of transitive dependencies with vulnerabilities in previous versions-->
-    <!--sonar configuration-->
-    <sonar.projectName>filing-history-delta-consumer</sonar.projectName>
-    <sonar.projectKey>uk.gov.companieshouse:filing-history-delta-consumer</sonar.projectKey>
+    <sonar.projectName>refund-request-consumer-java</sonar.projectName>
+    <sonar.projectKey>uk.gov.companieshouse:refund-request-consumer-java</sonar.projectKey>
     <sonar.token>${CODE_ANALYSIS_TOKEN}</sonar.token>
     <sonar.login/>
     <sonar.password/>
@@ -52,6 +49,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.kafka</groupId>
@@ -94,16 +95,6 @@
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
       <version>${avro-version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.commons</groupId>
-          <artifactId>commons-compress</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.wiremock</groupId>

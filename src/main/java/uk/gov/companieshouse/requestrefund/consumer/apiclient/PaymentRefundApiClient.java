@@ -33,9 +33,14 @@ public class PaymentRefundApiClient {
         bodyPost.setAmount(amount);
 
         bodyPost.setRefundReference(refundRequest.getRefundReference());
-        try {
-            client.privatePayment().createRefundsRequest(POST_REQUEST_URI.formatted(refundRequest.getRefundReference()), bodyPost).execute();
 
+        String requestUri = POST_REQUEST_URI.formatted(refundRequest.getPaymentId());
+
+        try {
+            client
+                .privatePayment()
+                .createRefundsRequest(requestUri, bodyPost)
+                .execute();
         } catch (ApiErrorResponseException ex) {
             responseHandler.handle(ex);
         } catch (URIValidationException ex) {

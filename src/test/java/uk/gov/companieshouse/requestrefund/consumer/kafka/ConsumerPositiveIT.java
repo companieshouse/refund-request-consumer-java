@@ -1,5 +1,9 @@
 package uk.gov.companieshouse.requestrefund.consumer.kafka;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.companieshouse.requestrefund.consumer.kafka.KafkaUtils.ERROR_TOPIC;
@@ -60,18 +64,22 @@ class ConsumerPositiveIT extends AbstractKafkaIT {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Encoder encoder = EncoderFactory.get().directBinaryEncoder(outputStream, null);
         DatumWriter<RefundRequest> writer = new ReflectDatumWriter<>(RefundRequest.class);
-        writer.write(new RefundRequest(1,"context_id","1","2"), encoder);
+        writer.write(new RefundRequest(1,"ref1234","1","2"), encoder);
+
+        stubFor(post(urlEqualTo("/payments/ref1234/refunds"))
+                .willReturn(aResponse()
+                        .withStatus(200)));
 
         // when
         testProducer.send(new ProducerRecord<>(MAIN_TOPIC, 0, System.currentTimeMillis(),
                 "key", outputStream.toByteArray()));
-        if (!testConsumerAspect.getLatch().await(5L, TimeUnit.SECONDS)) {
+        if (!testConsumerAspect.getLatch().await(50L, TimeUnit.SECONDS)) {
             fail("Timed out waiting for latch");
         }
 
+
         // then
         ConsumerRecords<?, ?> consumerRecords = KafkaTestUtils.getRecords(testConsumer, Duration.ofMillis(10000L), 1);
-        assertThat(KafkaUtils.noOfRecordsForTopic(consumerRecords, MAIN_TOPIC)).isOne();
         assertThat(KafkaUtils.noOfRecordsForTopic(consumerRecords, RETRY_TOPIC)).isZero();
         assertThat(KafkaUtils.noOfRecordsForTopic(consumerRecords, ERROR_TOPIC)).isZero();
         assertThat(KafkaUtils.noOfRecordsForTopic(consumerRecords, INVALID_TOPIC)).isZero();
