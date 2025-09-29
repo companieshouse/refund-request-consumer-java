@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.requestrefund.consumer.kafka;
 
 import java.util.Map;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
@@ -23,7 +24,7 @@ import org.springframework.kafka.retrytopic.RetryTopicConfigurationBuilder;
 import org.springframework.kafka.support.serializer.DelegatingByTypeSerializer;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 
-import uk.gov.companieshouse.payments.RefundRequest;
+import payments.refund_request;
 import uk.gov.companieshouse.requestrefund.consumer.exception.RetryableException;
 import uk.gov.companieshouse.requestrefund.consumer.serdes.RefundRequestDeserialiser;
 import uk.gov.companieshouse.requestrefund.consumer.serdes.RefundRequestSerializer;
@@ -33,7 +34,7 @@ import uk.gov.companieshouse.requestrefund.consumer.serdes.RefundRequestSerializ
 public class KafkaConfig {
 
     @Bean
-    public ConsumerFactory<String, RefundRequest> consumerFactory(
+    public ConsumerFactory<String, refund_request> consumerFactory(
             @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
         return new DefaultKafkaConsumerFactory<>(
                 Map.of(
@@ -49,10 +50,10 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, RefundRequest> kafkaListenerContainerFactory(
+    public ConcurrentKafkaListenerContainerFactory<String, refund_request> kafkaListenerContainerFactory(
             @Value("${consumer.concurrency}") Integer concurrency,
-            ConsumerFactory<String, RefundRequest> consumerFactory) {
-        ConcurrentKafkaListenerContainerFactory<String, RefundRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
+            ConsumerFactory<String, refund_request> consumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, refund_request> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.setConcurrency(concurrency);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
@@ -77,7 +78,7 @@ public class KafkaConfig {
                 new DelegatingByTypeSerializer(
                         Map.of(
                                 byte[].class, new ByteArraySerializer(),
-                                RefundRequest.class, new RefundRequestSerializer())));
+                                refund_request.class, new RefundRequestSerializer())));
     }
 
     @Bean

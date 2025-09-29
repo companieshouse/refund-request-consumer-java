@@ -2,7 +2,6 @@ package uk.gov.companieshouse.requestrefund.consumer;
 
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-import uk.gov.companieshouse.payments.RefundRequest;
 import uk.gov.companieshouse.requestrefund.consumer.exception.NonRetryableException;
 import uk.gov.companieshouse.requestrefund.consumer.logging.DataMapHolder;
 import static uk.gov.companieshouse.requestrefund.consumer.Application.NAMESPACE;
@@ -13,12 +12,14 @@ import java.util.Optional;
 
 import org.springframework.messaging.MessageHeaders;
 
+import payments.refund_request;
+
 public class Util {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
-    public static RefundRequest extractRefundRequest(Object payload) {
-        if (payload instanceof RefundRequest refundRequest) {
+    public static refund_request extractRefundRequest(Object payload) {
+        if (payload instanceof refund_request refundRequest) {
             return refundRequest;
         }
         String errorMessage = "Invalid payload type, payload: [%s]".formatted(payload.toString());

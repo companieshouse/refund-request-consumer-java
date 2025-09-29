@@ -58,7 +58,7 @@ class ConsumerPositiveIT extends AbstractKafkaIT {
     }
 
     @Test
-    void shouldConsumeFilingHistoryDeleteDeltaAndProcessSuccessfully() throws Exception {
+    void shouldConsumeRefundRequestDeleteDeltaAndProcessSuccessfully() throws Exception {
         // give
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

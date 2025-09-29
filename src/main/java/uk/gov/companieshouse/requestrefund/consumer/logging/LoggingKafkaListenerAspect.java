@@ -17,9 +17,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
+import payments.refund_request;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-import uk.gov.companieshouse.payments.RefundRequest;
 import uk.gov.companieshouse.requestrefund.consumer.Util;
 
 @Component
@@ -41,7 +41,7 @@ class LoggingKafkaListenerAspect {
             retryCount = Optional.ofNullable(headers.get(DEFAULT_HEADER_ATTEMPTS))
                     .map(attempts -> ByteBuffer.wrap((byte[]) attempts).getInt())
                     .orElse(1) - 1;
-            RefundRequest refundRequest = Util.extractRefundRequest(message.getPayload());
+            refund_request refundRequest = Util.extractRefundRequest(message.getPayload());
 
             //TODO: should this not generate a random string if unknown
             DataMapHolder.initialise(Optional.ofNullable(refundRequest.getRefundReference())

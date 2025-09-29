@@ -63,7 +63,7 @@ class ConsumerNonRetryableExceptionIT extends AbstractKafkaIT {
     }
 
     @Test
-    void testRepublishToFilingHistoryInvalidMessageTopicIfNonRetryableExceptionThrown() throws Exception {
+    void testRepublishToRRefundRequestInvalidMessageTopicIfNonRetryableExceptionThrown() throws Exception {
         // given
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Encoder encoder = EncoderFactory.get().directBinaryEncoder(outputStream, null);

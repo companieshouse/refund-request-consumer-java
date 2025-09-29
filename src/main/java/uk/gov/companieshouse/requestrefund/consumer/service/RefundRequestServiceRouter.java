@@ -2,7 +2,7 @@ package uk.gov.companieshouse.requestrefund.consumer.service;
 
 import org.springframework.stereotype.Component;
 
-import uk.gov.companieshouse.payments.RefundRequest;
+import payments.refund_request;
 import uk.gov.companieshouse.requestrefund.consumer.apiclient.PaymentRefundApiClient;
 
 @Component
@@ -14,7 +14,7 @@ public class RefundRequestServiceRouter {
         this.paymentRefundApiClient = paymentRefundApiClient;
     }
 
-    public void route(RefundRequest json) {
-        paymentRefundApiClient.createPaymentRefundRequest(json);
+    public void route(refund_request refundRequest) {
+        paymentRefundApiClient.createPaymentRefundRequest(refundRequest);
     }
 }

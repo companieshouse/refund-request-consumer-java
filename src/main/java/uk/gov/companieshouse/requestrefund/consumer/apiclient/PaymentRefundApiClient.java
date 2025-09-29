@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import org.springframework.stereotype.Component;
 
+import payments.refund_request;
 import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.payment.RequestBodyPost;
-import uk.gov.companieshouse.payments.RefundRequest;
 
 @Component
 public class PaymentRefundApiClient {
@@ -23,7 +23,7 @@ public class PaymentRefundApiClient {
         this.responseHandler = responseHandler;
     }
 
-    public void createPaymentRefundRequest(RefundRequest refundRequest) {
+    public void createPaymentRefundRequest(refund_request refundRequest) {
         InternalApiClient client = internalApiClientFactory.get();
 
         RequestBodyPost bodyPost = new RequestBodyPost();
@@ -48,7 +48,7 @@ public class PaymentRefundApiClient {
         }
     }
 
-    private int convertDecimalAmountToPennies(RefundRequest refundRequest) {
+    private int convertDecimalAmountToPennies(refund_request refundRequest) {
         //Converting the refund amount from String to Integer as the payments API expects an Integer value
         //representing the amount in pence.
         //e.g. "1.32" becomes 132

@@ -17,13 +17,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import payments.refund_request;
 import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.handler.payment.PrivatePaymentResourceHandler;
 import uk.gov.companieshouse.api.handler.payment.request.PaymentRefundRequest;
 import uk.gov.companieshouse.api.payment.RequestBodyPost;
-import uk.gov.companieshouse.payments.RefundRequest;
 
 class PaymentRefundApiClientTest {
 
@@ -31,7 +31,7 @@ class PaymentRefundApiClientTest {
     private InternalApiClient internalApiClient;
     private ResponseHandler responseHandler;
     private PaymentRefundApiClient paymentRefundApiClient;
-    private RefundRequest refundRequest;
+    private refund_request refundRequest;
     private PrivatePaymentResourceHandler privatePaymentHandler;
     private PaymentRefundRequest refundsRequestHandler;
 
@@ -40,7 +40,7 @@ class PaymentRefundApiClientTest {
         internalApiClientFactory = mock(Supplier.class);
         internalApiClient = mock(InternalApiClient.class);
         responseHandler = mock(ResponseHandler.class);
-        refundRequest = mock(RefundRequest.class);
+        refundRequest = mock(refund_request.class);
         privatePaymentHandler = mock(PrivatePaymentResourceHandler.class);
         refundsRequestHandler = mock(PaymentRefundRequest.class);
 
@@ -81,7 +81,7 @@ class PaymentRefundApiClientTest {
 
     @Test
     void convertDecimalAmountToPennies_validAmount() {
-        RefundRequest req = mock(RefundRequest.class);
+        refund_request req = mock(refund_request.class);
         when(req.getRefundAmount()).thenReturn("12.34");
         // Use reflection to access private method
         int amount = invokeConvertDecimalAmountToPennies(paymentRefundApiClient, req);
@@ -90,22 +90,22 @@ class PaymentRefundApiClientTest {
 
     @Test
     void convertDecimalAmountToPennies_nullAmount_throwsNullPointerException() {
-        RefundRequest req = mock(RefundRequest.class);
+        refund_request req = mock(refund_request.class);
         when(req.getRefundAmount()).thenReturn(null);
         assertThrows(NullPointerException.class, () -> invokeConvertDecimalAmountToPennies(paymentRefundApiClient, req));
     }
 
     @Test
     void convertDecimalAmountToPennies_invalidAmount_throwsNumberFormatException() {
-        RefundRequest req = mock(RefundRequest.class);
+        refund_request req = mock(refund_request.class);
         when(req.getRefundAmount()).thenReturn("abc");
         assertThrows(NumberFormatException.class, () -> invokeConvertDecimalAmountToPennies(paymentRefundApiClient, req));
     }
 
     // Helper to invoke private method
-    private int invokeConvertDecimalAmountToPennies(PaymentRefundApiClient client, RefundRequest req) {
+    private int invokeConvertDecimalAmountToPennies(PaymentRefundApiClient client, refund_request req) {
         try {
-            var method = PaymentRefundApiClient.class.getDeclaredMethod("convertDecimalAmountToPennies", RefundRequest.class);
+            var method = PaymentRefundApiClient.class.getDeclaredMethod("convertDecimalAmountToPennies", refund_request.class);
             method.setAccessible(true);
             return (int) method.invoke(client, req);
         } catch (Exception e) {

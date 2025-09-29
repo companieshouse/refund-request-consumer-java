@@ -1,10 +1,14 @@
 package uk.gov.companieshouse.requestrefund.consumer.service;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.gov.companieshouse.payments.RefundRequest;
+
+import payments.refund_request;
 import uk.gov.companieshouse.requestrefund.consumer.apiclient.PaymentRefundApiClient;
-import static org.mockito.Mockito.*;
 
 class RefundRequestServiceRouterTest {
 
@@ -19,10 +23,10 @@ class RefundRequestServiceRouterTest {
 
     @Test
     void route_shouldCallCreatePaymentRefundRequest() {
-        RefundRequest refundRequest = mock(RefundRequest.class);
+        refund_request mockRefundRequest = mock(refund_request.class);
 
-        refundRequestServiceRouter.route(refundRequest);
+        refundRequestServiceRouter.route(mockRefundRequest);
 
-        verify(paymentRefundApiClient, times(1)).createPaymentRefundRequest(refundRequest);
+        verify(paymentRefundApiClient, times(1)).createPaymentRefundRequest(mockRefundRequest);
     }
 }

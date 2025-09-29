@@ -22,10 +22,10 @@ These instructions are for a local docker environment.
 
 | Variable                      | Description                                                                                     | Example (from docker-chs-development) |
 |-------------------------------|-------------------------------------------------------------------------------------------------|---------------------------------------|
-| PAYMENT_API.                  | The client ID of an API key, with internal app privileges, to call filing-history-data-api with | abc123def456ghi789                    |
+| PAYMENT_API                   | The client ID of an API key, with internal app privileges, to call payments-api with            | abc123def456ghi789                    |
 | BOOTSTRAP_SERVER_URL          | The URL to the kafka broker                                                                     | kafka:9092                            |
 | CONCURRENT_LISTENER_INSTANCES | The number of listeners run in parallel for the consumer                                        | 1                                     |
-| FILING_HISTORY_DELTA_TOPIC    | The topic ID for filing history delta kafka topic                                               | refund-request                        |
+| REFUND_REQUEST_TOPIC          | The topic ID for refund request topic                                                           | refund-request                        |
 | GROUP_ID                      | The group ID for the service's Kafka topics                                                     | refund-request-consumer               |
 | MAX_ATTEMPTS                  | The number of times a message will be retried before being moved to the error topic             | 2                                     |
 | BACKOFF_DELAY                 | The incremental time delay between message retries                                              | 60 (seconds)                          |

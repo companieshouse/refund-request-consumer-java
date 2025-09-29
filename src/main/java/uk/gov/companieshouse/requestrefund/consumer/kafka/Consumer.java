@@ -14,9 +14,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
+import payments.refund_request;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-import uk.gov.companieshouse.payments.RefundRequest;
 import uk.gov.companieshouse.requestrefund.consumer.Util;
 import uk.gov.companieshouse.requestrefund.consumer.exception.RetryableException;
 import uk.gov.companieshouse.requestrefund.consumer.logging.DataMapHolder;
@@ -41,7 +41,7 @@ public class Consumer {
             containerFactory = "kafkaListenerContainerFactory",
             topics = {"${consumer.topic}"},
             groupId = "${consumer.group-id}")
-    public void consume(Message<RefundRequest> message) throws InterruptedException {
+    public void consume(Message<refund_request> message) throws InterruptedException {
         try {
             router.route(message.getPayload());
         } catch (RetryableException ex) {
@@ -54,12 +54,12 @@ public class Consumer {
         }
     }
 
-    private void logIfMaxAttemptsReached(Message<RefundRequest> message, RetryableException ex) {
+    private void logIfMaxAttemptsReached(Message<refund_request> message, RetryableException ex) {
         MessageHeaders headers = message.getHeaders();
 
         int retryCount = Util.getRetryCount(headers);
 
-        RefundRequest refundRequest = Util.extractRefundRequest(message.getPayload());
+        refund_request refundRequest = Util.extractRefundRequest(message.getPayload());
 
         DataMapHolder.initialise(Optional.ofNullable(refundRequest.getRefundReference())
                 .orElse(UUID.randomUUID().toString()));
