@@ -1,0 +1,31 @@
+@startuml refund
+skinparam style strictuml
+    title "Refund"
+
+    !$COLOR_KAFKA = "#green"
+    !$COLOR_HTTP = "#red"
+
+    participant "CHIPS \n<font color=purple> (Lang: GO)" as chips
+    participant "chs-kafka-api \n<font color=purple> (Lang: GO) " as chs_kafka_api
+    participant "Filing Notification Sender \n<font color=purple>(Lang: GO)" as filing_notification
+    participant "Filing Processed Tx Updater \n<font color=purple>(Lang: Go)" as filing_processed
+    participant "Notification Sender \n<font color=purple>(Lang: Go)" as notification_sender
+    participant "Email Sender \n<font color=purple>(Lang: Go)" as email_sender
+    participant "Transaction API \n<font color=purple>(Lang: Java)" as transaction_api
+    participant "Refund Request Consumer \n<font color=purple>(Lang: Go)" as refund_request_consumer
+    participant "Payments API \n<font color=purple>(Lang: Go)" as payment_api
+    participant "Payment Processed Consumer \n<font color=purple>(Lang: Go)" as payment_processed_consumer
+    participant "Gov Pay\n" as gov_pay
+
+    autonumber
+    chips [$COLOR_HTTP]-> chs_kafka_api: POST /private/filing-processed
+    chs_kafka_api [$COLOR_KAFKA]-> filing_notification: submission-processed<font color=purple>**(0.10)**
+    chs_kafka_api [$COLOR_KAFKA]-> filing_processed: submission-processed<font color=purple>**(0.10)**
+    filing_processed [$COLOR_HTTP]-> transaction_api: PATCH /private/transactions/{transaction_id}
+    transaction_api [$COLOR_KAFKA]-> refund_request_consumer: refund-request<font color=purple>**(0.10)**
+    refund_request_consumer [$COLOR_HTTP]-> payment_api: POST /payments/{paymentId}/refunds
+    payment_api [$COLOR_KAFKA]-> payment_processed_consumer: payment-processed<font color=purple>**(0.10)**
+    payment_processed_consumer [$COLOR_HTTP]-> gov_pay: GET /callback/payments/govpay/{payment_id}
+    filing_processed [$COLOR_KAFKA]-> notification_sender: message-send<font color=purple>**(0.10)**
+    notification_sender [$COLOR_KAFKA]-> email_sender: email-send<font color=purple>**(0.10)**
+@enduml
