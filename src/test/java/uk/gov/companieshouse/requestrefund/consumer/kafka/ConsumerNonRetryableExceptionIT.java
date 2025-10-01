@@ -30,7 +30,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import uk.gov.companieshouse.payments.RefundRequest;
+import payments.refund_request;
 import uk.gov.companieshouse.requestrefund.consumer.exception.NonRetryableException;
 import uk.gov.companieshouse.requestrefund.consumer.service.RefundRequestServiceRouter;
 
@@ -67,9 +67,9 @@ class ConsumerNonRetryableExceptionIT extends AbstractKafkaIT {
         // given
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Encoder encoder = EncoderFactory.get().directBinaryEncoder(outputStream, null);
-        DatumWriter<RefundRequest> writer = new ReflectDatumWriter<>(RefundRequest.class);
+        DatumWriter<refund_request> writer = new ReflectDatumWriter<>(refund_request.class);
 
-        RefundRequest refundRequest = new RefundRequest();
+        refund_request refundRequest = new refund_request();
         refundRequest.setAttempt(0);
         refundRequest.setPaymentId("qwerty");
         refundRequest.setRefundAmount("1.32");

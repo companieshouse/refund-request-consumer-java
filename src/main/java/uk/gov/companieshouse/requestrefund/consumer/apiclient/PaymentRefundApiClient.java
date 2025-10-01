@@ -8,7 +8,7 @@ import payments.refund_request;
 import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
-import uk.gov.companieshouse.api.payment.RequestBodyPost;
+import uk.gov.companieshouse.api.payments.RequestBodyPost;
 
 @Component
 public class PaymentRefundApiClient {

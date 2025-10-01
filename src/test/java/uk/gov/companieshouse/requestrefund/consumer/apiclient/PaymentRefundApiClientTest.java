@@ -21,13 +21,12 @@ import payments.refund_request;
 import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
-import uk.gov.companieshouse.api.handler.payment.PrivatePaymentResourceHandler;
-import uk.gov.companieshouse.api.handler.payment.request.PaymentRefundRequest;
-import uk.gov.companieshouse.api.payment.RequestBodyPost;
+import uk.gov.companieshouse.api.handler.payments.PrivatePaymentResourceHandler;
+import uk.gov.companieshouse.api.handler.payments.request.PaymentRefundRequest;
+import uk.gov.companieshouse.api.payments.RequestBodyPost;
 
 class PaymentRefundApiClientTest {
 
-    private Supplier<InternalApiClient> internalApiClientFactory;
     private InternalApiClient internalApiClient;
     private ResponseHandler responseHandler;
     private PaymentRefundApiClient paymentRefundApiClient;
@@ -37,7 +36,8 @@ class PaymentRefundApiClientTest {
 
     @BeforeEach
     void setUp() {
-        internalApiClientFactory = mock(Supplier.class);
+        @SuppressWarnings("unchecked")
+        Supplier<InternalApiClient> internalApiClientFactory = mock(Supplier.class);
         internalApiClient = mock(InternalApiClient.class);
         responseHandler = mock(ResponseHandler.class);
         refundRequest = mock(refund_request.class);

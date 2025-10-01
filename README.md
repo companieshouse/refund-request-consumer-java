@@ -3,6 +3,9 @@
 ## Overview
 This service consumes messages from the `refund-request` Kafka topic and initiates the refund process by interacting with the [payment service](https://github.com/companieshouse/payments.api.ch.gov.uk).
 
+The diagram below shows how the refund-request-consumer is used in the refund journey.
+![image info](./refund.png)
+
 ## Requirements
 In order to run the service locally you will need the following:
 - [Java 21](https://www.oracle.com/java/technologies/downloads/#java21)

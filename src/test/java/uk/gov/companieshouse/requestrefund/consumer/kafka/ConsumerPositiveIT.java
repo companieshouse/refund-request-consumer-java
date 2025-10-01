@@ -33,7 +33,7 @@ import org.springframework.test.context.DynamicPropertySource;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 
-import uk.gov.companieshouse.payments.RefundRequest;
+import payments.refund_request;
 
 @SpringBootTest
 @WireMockTest(httpPort = 8888)
@@ -63,8 +63,8 @@ class ConsumerPositiveIT extends AbstractKafkaIT {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Encoder encoder = EncoderFactory.get().directBinaryEncoder(outputStream, null);
-        DatumWriter<RefundRequest> writer = new ReflectDatumWriter<>(RefundRequest.class);
-        writer.write(new RefundRequest(1,"ref1234","1","2"), encoder);
+        DatumWriter<refund_request> writer = new ReflectDatumWriter<>(refund_request.class);
+        writer.write(new refund_request(1,"ref1234","1","2"), encoder);
 
         stubFor(post(urlEqualTo("/payments/ref1234/refunds"))
                 .willReturn(aResponse()

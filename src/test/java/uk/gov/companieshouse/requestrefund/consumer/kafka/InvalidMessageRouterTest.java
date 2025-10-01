@@ -20,7 +20,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import uk.gov.companieshouse.payments.RefundRequest;
+import payments.refund_request;
+
 
 @ExtendWith(MockitoExtension.class)
 class InvalidMessageRouterTest {
@@ -31,7 +32,7 @@ class InvalidMessageRouterTest {
     private MessageFlags flags;
 
     @Mock
-    private RefundRequest refundRequest;
+    private refund_request refundRequest;
 
     @BeforeEach
     void setup() {

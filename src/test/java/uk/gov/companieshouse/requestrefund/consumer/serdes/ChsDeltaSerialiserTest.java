@@ -20,19 +20,19 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import uk.gov.companieshouse.payments.RefundRequest;
+import payments.refund_request;
 import uk.gov.companieshouse.requestrefund.consumer.exception.NonRetryableException;
 
 @ExtendWith(MockitoExtension.class)
 class ChsDeltaSerialiserTest {
 
     @Mock
-    private DatumWriter<RefundRequest> writer;
+    private DatumWriter<refund_request> writer;
 
     @Test
     void testSerialiseChsDelta() {
         // given
-        RefundRequest refundRequest = new RefundRequest();
+        refund_request refundRequest = new refund_request();
         refundRequest.setAttempt(0);
         refundRequest.setPaymentId("qwerty");
         refundRequest.setRefundAmount("1.32");
@@ -50,7 +50,7 @@ class ChsDeltaSerialiserTest {
     @Test
     void testThrowNonRetryableExceptionIfIOExceptionThrown() throws IOException {
         // given
-        RefundRequest refundRequest = new RefundRequest();
+        refund_request refundRequest = new refund_request();
         refundRequest.setAttempt(0);
         refundRequest.setPaymentId("qwerty");
         refundRequest.setRefundAmount("1.32");
