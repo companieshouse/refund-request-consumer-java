@@ -30,13 +30,12 @@
         <skip.unit.tests>false</skip.unit.tests>
         <skip.integration.tests>false</skip.integration.tests>
         <structured-logging.version>3.0.42</structured-logging.version>
+        <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
 
         <sonar.projectName>refund-request-consumer-java</sonar.projectName>
         <sonar.projectKey>uk.gov.companieshouse:refund-request-consumer-java</sonar.projectKey>
         <sonar.token>${CODE_ANALYSIS_TOKEN}</sonar.token>
         <sonar.java.binaries>${project.basedir}/target,${project.basedir}/target/*</sonar.java.binaries>
-        <sonar.login/>
-        <sonar.password/>
     </properties>
     <dependencies>
         <!-- start fixes to vulnerable transitive dependencies-->
@@ -189,9 +188,14 @@
                     </properties>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
                     <argLine>${failsafeArgLine}</argLine>
-                    <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                    <classesDirectory>${project.build.`}</classesDirectory>
                     <skipITs>${skip.integration.tests}</skipITs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.version}</version>
             </plugin>
         </plugins>
     </build>
