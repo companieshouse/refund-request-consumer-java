@@ -1,4 +1,4 @@
-artifact_name       := psc-data-api
+artifact_name       := refund-request-consumer
 version             := "unversioned"
 
 .PHONY: all
