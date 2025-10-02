@@ -34,6 +34,7 @@
         <sonar.projectName>refund-request-consumer-java</sonar.projectName>
         <sonar.projectKey>uk.gov.companieshouse:refund-request-consumer-java</sonar.projectKey>
         <sonar.token>${CODE_ANALYSIS_TOKEN}</sonar.token>
+        <sonar.java.binaries>${project.basedir}/target,${project.basedir}/target/*</sonar.java.binaries>
         <sonar.login/>
         <sonar.password/>
     </properties>
