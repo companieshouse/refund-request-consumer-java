@@ -32,6 +32,8 @@
         <structured-logging.version>3.0.42</structured-logging.version>
         <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
 
+        <sonar.login/>
+        <sonar.password/>
         <sonar.projectName>refund-request-consumer-java</sonar.projectName>
         <sonar.projectKey>uk.gov.companieshouse:refund-request-consumer-java</sonar.projectKey>
         <sonar.token>${CODE_ANALYSIS_TOKEN}</sonar.token>
