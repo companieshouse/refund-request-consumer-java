@@ -27,8 +27,6 @@ public class TestConsumerAspect {
         System.out.println("  Latch count before: " + latch.getCount());
         latch.countDown();
         System.out.println("  Latch count after: " + latch.getCount());
-        // Uncomment for stack trace:
-        // Thread.dumpStack();
     }
 
     public CountDownLatch getLatch() {

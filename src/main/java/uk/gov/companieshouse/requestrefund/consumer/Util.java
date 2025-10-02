@@ -16,6 +16,10 @@ import payments.refund_request;
 
 public class Util {
 
+    private Util() {
+        // util class
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
     public static refund_request extractRefundRequest(Object payload) {

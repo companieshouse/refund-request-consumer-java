@@ -43,7 +43,6 @@ class LoggingKafkaListenerAspect {
                     .orElse(1) - 1;
             refund_request refundRequest = Util.extractRefundRequest(message.getPayload());
 
-            //TODO: should this not generate a random string if unknown
             DataMapHolder.initialise(Optional.ofNullable(refundRequest.getRefundReference())
                     .orElse(UUID.randomUUID().toString()));
 

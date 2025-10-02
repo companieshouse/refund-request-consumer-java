@@ -28,9 +28,7 @@ public class PaymentRefundApiClient {
 
         RequestBodyPost bodyPost = new RequestBodyPost();
 
-        int amount = convertDecimalAmountToPennies(refundRequest);
-
-        bodyPost.setAmount(amount);
+        bodyPost.setAmount(convertDecimalAmountToPennies(refundRequest));
 
         bodyPost.setRefundReference(refundRequest.getRefundReference());
 

@@ -53,7 +53,7 @@ class PaymentRefundApiClientTest {
     }
 
     @Test
-    void createPaymentRefundRequest_successful() throws Exception {
+    void createPaymentRefundRequest_successful() {
         when(refundRequest.getRefundAmount()).thenReturn("1.32");
         when((refundRequest.getPaymentId())).thenReturn("pay1234");
         when(refundRequest.getRefundReference()).thenReturn("REF123");
