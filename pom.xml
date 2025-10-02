@@ -36,6 +36,9 @@
         <sonar.token>${CODE_ANALYSIS_TOKEN}</sonar.token>
         <sonar.login/>
         <sonar.password/>
+        <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+
     </properties>
     <dependencies>
         <!-- start fixes to vulnerable transitive dependencies-->
@@ -157,12 +160,51 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>pre-unit-test</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <propertyName>surefireArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>post-unit-test</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>pre-integration-test</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <propertyName>failsafeArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>post-integration-test</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
-                    <argLine>${surefireArgLine}</argLine>
+                    <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
                     <skipTests>${skip.unit.tests}</skipTests>
                 </configuration>
             </plugin>
@@ -180,14 +222,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <properties>
-                        <property>
-                            <name>listener</name>
-                            <value>org.sonar.java.jacoco.JUnitListener</value>
-                        </property>
-                    </properties>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
-                    <argLine>${failsafeArgLine}</argLine>
+                    <argLine>${failsafeArgLine} -Dfile.encoding=UTF-8</argLine>
                     <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                     <skipITs>${skip.integration.tests}</skipITs>
                 </configuration>

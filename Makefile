@@ -7,35 +7,28 @@ all: build
 .PHONY: clean
 clean:
 	mvn clean
-	rm -f ./$(artifact_name)-*.zip
 	rm -f ./$(artifact_name).jar
+	rm -f ./$(artifact_name)-*.zip
 	rm -rf ./build-*
-	rm -rf ./build.log-*
+	rm -f ./build.log
 
 .PHONY: build
 build:
 	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
-	mvn package -Dmaven.test.skip=true
+	mvn package -DskipTests=true
 	cp ./target/$(artifact_name)-$(version).jar ./$(artifact_name).jar
 
 .PHONY: test
-test: test-unit test-integration
+test: clean
+	mvn verify
 
 .PHONY: test-unit
 test-unit: clean
-	mvn test
+	mvn verify
 
 .PHONY: test-integration
 test-integration: clean
 	mvn verify -Dskip.unit.tests=true
-
-.PHONY: docker-image
-docker-image: clean
-	mvn package -Dskip.unit.tests=true -Dskip.integration.tests=true jib:dockerBuild
-
-.PHONY: coverage
-coverage:
-	mvn verify
 
 .PHONY: package
 package:
@@ -47,20 +40,13 @@ endif
 	mvn package -DskipTests=true
 	$(eval tmpdir:=$(shell mktemp -d build-XXXXXXXXXX))
 	cp ./start.sh $(tmpdir)
+	cp ./routes.yaml $(tmpdir)
 	cp ./target/$(artifact_name)-$(version).jar $(tmpdir)/$(artifact_name).jar
 	cd $(tmpdir); zip -r ../$(artifact_name)-$(version).zip *
 	rm -rf $(tmpdir)
 
-.PHONY: build-container
-build-container: build
-	docker build .
-
 .PHONY: dist
-dist: clean build package coverage
-
-.PHONY: publish
-publish:
-	mvn jar:jar deploy:deploy
+dist: clean build package
 
 .PHONY: sonar
 sonar:

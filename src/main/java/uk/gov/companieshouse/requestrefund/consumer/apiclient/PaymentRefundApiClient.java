@@ -28,9 +28,7 @@ public class PaymentRefundApiClient {
 
         RequestBodyPost bodyPost = new RequestBodyPost();
 
-        int amount = convertDecimalAmountToPennies(refundRequest);
-
-        bodyPost.setAmount(amount);
+        bodyPost.setAmount(convertDecimalAmountToPennies(refundRequest));
 
         bodyPost.setRefundReference(refundRequest.getRefundReference());
 
@@ -63,7 +61,7 @@ public class PaymentRefundApiClient {
         if (!amountString.matches("\\d+")) {
             throw new NumberFormatException("Refund amount is not a valid number");
         }
-        int amount = Integer.parseInt(amountString);
-        return amount;
+
+        return Integer.parseInt(amountString);
     }
 }

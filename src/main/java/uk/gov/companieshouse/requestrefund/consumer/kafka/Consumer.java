@@ -41,7 +41,7 @@ public class Consumer {
             containerFactory = "kafkaListenerContainerFactory",
             topics = {"${consumer.topic}"},
             groupId = "${consumer.group-id}")
-    public void consume(Message<refund_request> message) throws InterruptedException {
+    public void consume(Message<refund_request> message) {
         try {
             router.route(message.getPayload());
         } catch (RetryableException ex) {

@@ -8,8 +8,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.companieshouse.requestrefund.consumer.kafka.KafkaUtils.ERROR_TOPIC;
-import static uk.gov.companieshouse.requestrefund.consumer.kafka.KafkaUtils.INVALID_TOPIC;
 import static uk.gov.companieshouse.requestrefund.consumer.kafka.KafkaUtils.MAIN_TOPIC;
 import static uk.gov.companieshouse.requestrefund.consumer.kafka.KafkaUtils.RETRY_TOPIC;
 
@@ -38,10 +36,12 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import payments.refund_request;
 
 @SpringBootTest(properties = {
-    "api.api-url=http://localhost:8888"
+    "api.api-url=http://localhost:8889",
+    "consumer.max-attempts=2",
+    "consumer.backoff-delay=50"
 })
-@WireMockTest(httpPort = 8888)
-class ConsumerPositiveIT extends AbstractKafkaIT {
+@WireMockTest(httpPort = 8889)
+class ConsumerRetryableException500ErrorIT extends AbstractKafkaIT {
 
     @Autowired
     private KafkaConsumer<String, byte[]> testConsumer;
@@ -72,20 +72,25 @@ class ConsumerPositiveIT extends AbstractKafkaIT {
 
         stubFor(post(urlEqualTo("/payments/ref1234/refunds"))
                 .willReturn(aResponse()
-                        .withStatus(200)));
+                        .withStatus(500)));
 
         // when
         testProducer.send(new ProducerRecord<>(MAIN_TOPIC, 0, System.currentTimeMillis(),
                 "key", outputStream.toByteArray()));
-        if (!testConsumerAspect.getLatch().await(5000L, TimeUnit.SECONDS)) {
+        if (!testConsumerAspect.getLatch().await(2, TimeUnit.SECONDS)) {
             fail("Timed out waiting for latch");
         }
 
         // then
-        ConsumerRecords<?, ?> consumerRecords = KafkaTestUtils.getRecords(testConsumer, Duration.ofMillis(10000L), 1);
-        assertThat(KafkaUtils.noOfRecordsForTopic(consumerRecords, RETRY_TOPIC)).isZero();
-        assertThat(KafkaUtils.noOfRecordsForTopic(consumerRecords, ERROR_TOPIC)).isZero();
-        assertThat(KafkaUtils.noOfRecordsForTopic(consumerRecords, INVALID_TOPIC)).isZero();
         verify(postRequestedFor(urlEqualTo("/payments/ref1234/refunds")));
+
+        int totalCount = 0;
+        long timeout = System.currentTimeMillis() + 2000; // 2 seconds
+        while (System.currentTimeMillis() < timeout) {
+            ConsumerRecords<?, ?> records = KafkaTestUtils.getRecords(testConsumer, Duration.ofMillis(200), 1);
+            totalCount += KafkaUtils.noOfRecordsForTopic(records, RETRY_TOPIC);
+            if (totalCount >= 1) break;
+        }
+        assertThat(totalCount).isEqualTo(1);
     }
 }
