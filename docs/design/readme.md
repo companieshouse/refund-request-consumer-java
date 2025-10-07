@@ -1,6 +1,6 @@
 ## Design
 
-The Consumer reads from the refund-request-consumer topic and deserilses the data into:
+The Consumer reads from the refund-request-consumer topic and deserialises the data into:
   * Attempt
   * PaymentID
   * RefundAmount
