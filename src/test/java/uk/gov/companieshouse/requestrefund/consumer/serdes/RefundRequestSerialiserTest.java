@@ -24,13 +24,13 @@ import payments.refund_request;
 import uk.gov.companieshouse.requestrefund.consumer.exception.NonRetryableException;
 
 @ExtendWith(MockitoExtension.class)
-class ChsDeltaSerialiserTest {
+class RefundRequestSerialiserTest {
 
     @Mock
     private DatumWriter<refund_request> writer;
 
     @Test
-    void testSerialiseChsDelta() {
+    void testSerialiseRefundRequest() {
         // given
         refund_request refundRequest = new refund_request();
         refundRequest.setAttempt(0);
@@ -39,12 +39,12 @@ class ChsDeltaSerialiserTest {
         refundRequest.setRefundReference("INVALID_TOPIC");
 
         try (RefundRequestSerializer serialiser = new RefundRequestSerializer()) {
-			// when
-			byte[] actual = serialiser.serialize("topic", refundRequest);
+            // when
+            byte[] actual = serialiser.serialize("topic", refundRequest);
 
-			// then
-			assertThat(actual, is(notNullValue()));
-		}
+            // then
+            assertThat(actual, is(notNullValue()));
+        }
     }
 
     @Test
