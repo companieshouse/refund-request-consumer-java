@@ -35,12 +35,12 @@ variable "desired_task_count" {
 variable "required_cpus" {
   type        = number
   description = "The required cpu resource for this service. 1024 here is 1 vCPU"
-  default     = 256 # defaulted low for dev environments, override for production
+  default     = 512 # defaulted low for dev environments, override for production
 }
 variable "required_memory" {
   type        = number
   description = "The required memory for this service"
-  default     = 512 # defaulted low for node service in dev environments, override for production
+  default     = 1024 # defaulted low for node service in dev environments, override for production
 }
 
 variable "max_task_count" {
@@ -77,7 +77,7 @@ variable "service_autoscale_scale_in_cooldown" {
 variable "service_autoscale_scale_out_cooldown" {
   type        = number
   description = "Cooldown in seconds for ECS Service scale out (add more tasks)"
-  default     = 300
+  default     = 600
 }
 variable "service_scaledown_schedule" {
   type        = string
@@ -116,15 +116,11 @@ variable "ssm_version_prefix" {
 
 variable "use_set_environment_files" {
   type        = bool
-  default     = false
+  default     = true
   description = "Toggle default global and shared environment files"
 }
-variable "log_level" {
-  default     = "info"
-  type        = string
-  description = "The log level for services to use: trace, debug, info or error"
-}
-variable "filing_history_delta_consumer_version" {
+
+variable "refund_request_consumer_java_version" {
   type        = string
   description = "The version of the refund-request-consumer-java container to run."
 }
