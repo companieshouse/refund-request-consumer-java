@@ -20,10 +20,10 @@ import org.junit.jupiter.api.function.Executable;
 import payments.refund_request;
 import uk.gov.companieshouse.requestrefund .consumer.exception.InvalidPayloadException;
 
-class ChsDeltaDeserialiserTest {
+class RefundRequestDeserialiserTest {
 
     @Test
-    void testShouldSuccessfullyDeserialiseChsDelta() throws IOException {
+    void testShouldSuccessfullyDeserialiseRefundRequest() throws IOException {
         // given
         refund_request refundRequest = new refund_request();
         refundRequest.setAttempt(0);
@@ -35,12 +35,12 @@ class ChsDeltaDeserialiserTest {
         DatumWriter<refund_request> writer = new ReflectDatumWriter<>(refund_request.class);
         writer.write(refundRequest, encoder);
         try (RefundRequestDeserialiser deserialiser = new RefundRequestDeserialiser()) {
-			// when
-			refund_request actual = deserialiser.deserialize("topic", outputStream.toByteArray());
+      // when
+      refund_request actual = deserialiser.deserialize("topic", outputStream.toByteArray());
 
-			// then
-			assertThat(actual, is(equalTo(refundRequest)));
-		}
+      // then
+      assertThat(actual, is(equalTo(refundRequest)));
+    }
     }
 
     @Test
@@ -51,14 +51,14 @@ class ChsDeltaDeserialiserTest {
         DatumWriter<String> writer = new SpecificDatumWriter<>(String.class);
         writer.write("hello", encoder);
         try (RefundRequestDeserialiser deserialiser = new RefundRequestDeserialiser()) {
-			// when
-			Executable actual = () -> deserialiser.deserialize("topic", outputStream.toByteArray());
+      // when
+      Executable actual = () -> deserialiser.deserialize("topic", outputStream.toByteArray());
 
-			// then
-			InvalidPayloadException exception = assertThrows(InvalidPayloadException.class, actual);
-			// Note the '\n' is the length prefix of the invalid data sent to the deserialiser
-			assertThat(exception.getMessage(), is(equalTo("Invalid payload: [\nhello]")));
-			assertThat(exception.getCause(), is(CoreMatchers.instanceOf(IOException.class)));
-		}
+      // then
+      InvalidPayloadException exception = assertThrows(InvalidPayloadException.class, actual);
+      // Note the '\n' is the length prefix of the invalid data sent to the deserialiser
+      assertThat(exception.getMessage(), is(equalTo("Invalid payload: [\nhello]")));
+      assertThat(exception.getCause(), is(CoreMatchers.instanceOf(IOException.class)));
+    }
     }
 }
