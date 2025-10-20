@@ -29,7 +29,7 @@ class PaymentRefundApiClientTest {
 
     private InternalApiClient internalApiClient;
     private ResponseHandler responseHandler;
-    private PaymentRefundApiClient paymentRefundApiClient;
+    private PaymentsApiClient paymentRefundApiClient;
     private refund_request refundRequest;
     private PrivatePaymentResourceHandler privatePaymentHandler;
     private PaymentRefundRequest refundsRequestHandler;
@@ -49,7 +49,7 @@ class PaymentRefundApiClientTest {
         when(privatePaymentHandler.createRefundsRequest(anyString(), any(RequestBodyPost.class)))
                 .thenReturn(refundsRequestHandler);
 
-        paymentRefundApiClient = new PaymentRefundApiClient(internalApiClientFactory, responseHandler);
+        paymentRefundApiClient = new PaymentsApiClient(internalApiClientFactory, responseHandler);
     }
 
     @Test
@@ -103,9 +103,9 @@ class PaymentRefundApiClientTest {
     }
 
     // Helper to invoke private method
-    private int invokeConvertDecimalAmountToPennies(PaymentRefundApiClient client, refund_request req) {
+    private int invokeConvertDecimalAmountToPennies(PaymentsApiClient client, refund_request req) {
         try {
-            var method = PaymentRefundApiClient.class.getDeclaredMethod("convertDecimalAmountToPennies", refund_request.class);
+            var method = PaymentsApiClient.class.getDeclaredMethod("convertDecimalAmountToPennies", refund_request.class);
             method.setAccessible(true);
             return (int) method.invoke(client, req);
         } catch (Exception e) {

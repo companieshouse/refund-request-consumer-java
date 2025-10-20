@@ -11,14 +11,14 @@ import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.payments.RequestBodyPost;
 
 @Component
-public class PaymentRefundApiClient {
+public class PaymentsApiClient {
 
     private static final String POST_REQUEST_URI = "/payments/%s/refunds";
 
     private final Supplier<InternalApiClient> internalApiClientFactory;
     private final ResponseHandler responseHandler;
 
-    public PaymentRefundApiClient(Supplier<InternalApiClient> internalApiClientFactory, ResponseHandler responseHandler) {
+    public PaymentsApiClient(Supplier<InternalApiClient> internalApiClientFactory, ResponseHandler responseHandler) {
         this.internalApiClientFactory = internalApiClientFactory;
         this.responseHandler = responseHandler;
     }
