@@ -8,16 +8,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import payments.refund_request;
-import uk.gov.companieshouse.requestrefund.consumer.apiclient.PaymentRefundApiClient;
+import uk.gov.companieshouse.requestrefund.consumer.apiclient.PaymentsApiClient;
 
 class RefundRequestServiceRouterTest {
 
-    private PaymentRefundApiClient paymentRefundApiClient;
+    private PaymentsApiClient paymentRefundApiClient;
     private RefundRequestServiceRouter refundRequestServiceRouter;
 
     @BeforeEach
     void setUp() {
-        paymentRefundApiClient = mock(PaymentRefundApiClient.class);
+        paymentRefundApiClient = mock(PaymentsApiClient.class);
         refundRequestServiceRouter = new RefundRequestServiceRouter(paymentRefundApiClient);
     }
 
