@@ -1,5 +1,5 @@
 #!/bin/bash
 
-PORT=8080
+PORT=808
 
 exec java -jar -Dserver.port="${PORT}" "refund-request-consumer-java.jar"
