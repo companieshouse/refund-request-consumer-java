@@ -42,11 +42,17 @@ public class Consumer {
             topics = {"${consumer.topic}"},
             groupId = "${consumer.group-id}")
     public void consume(Message<refund_request> message) {
+
+        refund_request refundRequest = Util.extractRefundRequest(message.getPayload());
+
+        MessageHeaders headers = message.getHeaders();
+        LOGGER.info(String.format("Received refund request %s", refundRequest.getRefundReference()));
         try {
-            router.route(message.getPayload());
+            router.route(refundRequest);
+            LOGGER.info(String.format("sent refund request %s to transactions-api - payment_id %s", refundRequest.getRefundReference(), refundRequest.getPaymentId()));
         } catch (RetryableException ex) {
             messageFlags.setRetryable(true);
-            logIfMaxAttemptsReached(message, ex);
+            logIfMaxAttemptsReached(refundRequest, headers, ex);
             throw ex;
         }
         finally {
@@ -54,12 +60,11 @@ public class Consumer {
         }
     }
 
-    private void logIfMaxAttemptsReached(Message<refund_request> message, RetryableException ex) {
-        MessageHeaders headers = message.getHeaders();
+    private void logIfMaxAttemptsReached(refund_request refundRequest, MessageHeaders headers, RetryableException ex) {
+
 
         int retryCount = Util.getRetryCount(headers);
 
-        refund_request refundRequest = Util.extractRefundRequest(message.getPayload());
 
         DataMapHolder.initialise(Optional.ofNullable(refundRequest.getRefundReference())
                 .orElse(UUID.randomUUID().toString()));
