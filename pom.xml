@@ -15,7 +15,6 @@
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <log4j-api.version>2.25.3</log4j-api.version>
         <private-api-sdk-java.version>4.0.493</private-api-sdk-java.version>
         <kafka-models.version>3.0.30</kafka-models.version>
         <commons-lang3-version>3.20.0</commons-lang3-version>
@@ -114,8 +113,13 @@
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>kafka-models</artifactId>
             <version>${kafka-models.version}</version>
-            <!--CVE-2026-1605 Fix-->
+            <!--CVE-2026-1605 Fix, involve below exclusions
+             as dependencies not being used and causing CVEs-->
             <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jetty.ee10</groupId>
+                    <artifactId>jetty-ee10-webapp</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-server</artifactId>
@@ -131,30 +135,6 @@
                 <exclusion>
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-io</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-util</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-alpn-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty.compression</groupId>
-                    <artifactId>jetty-compression-gzip</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty.compression</groupId>
-                    <artifactId>jetty-compression-common</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty.ee10</groupId>
-                    <artifactId>jetty-ee10-webapp</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -178,7 +158,14 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
+            <!--FIX for CVE-2026-34478
+            CVE-2026-34480
+            CVE-2026-34477-->
             <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
             <exclusion>
                 <groupId>com.dynatrace.hash4j</groupId>
                 <artifactId>hash4j</artifactId>
