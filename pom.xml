@@ -32,7 +32,7 @@
         <testcontainers-bom.version>1.21.4</testcontainers-bom.version>
         <jackson-core.version>3.1.1</jackson-core.version>
         <tomcat-embed-core.version>11.0.21</tomcat-embed-core.version>
-        <grpc-api.version>1.80.0</grpc-api.version>
+        <grpc-bom.version>1.80.0</grpc-bom.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -66,9 +66,10 @@
             <!-- CVE-2026-33186(9.1) Fix-->
             <dependency>
                 <groupId>io.grpc</groupId>
-                <artifactId>grpc-api</artifactId>
-                <version>${grpc-api.version}</version>
-                <scope>compile</scope>
+                <artifactId>grpc-bom</artifactId>
+                <version>${grpc-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
