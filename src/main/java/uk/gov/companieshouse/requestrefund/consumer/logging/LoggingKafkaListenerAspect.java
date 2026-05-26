@@ -33,12 +33,11 @@ class LoggingKafkaListenerAspect {
     @Around("@annotation(org.springframework.kafka.annotation.KafkaListener)")
     public Object manageStructuredLogging(ProceedingJoinPoint joinPoint) throws Throwable {
 
-        int retryCount = 0;
         try {
             Message<?> message = (Message<?>) joinPoint.getArgs()[0];
             MessageHeaders headers = message.getHeaders();
 
-            retryCount = Optional.ofNullable(headers.get(DEFAULT_HEADER_ATTEMPTS))
+            int retryCount = Optional.ofNullable(headers.get(DEFAULT_HEADER_ATTEMPTS))
                     .map(attempts -> ByteBuffer.wrap((byte[]) attempts).getInt())
                     .orElse(1) - 1;
             refund_request refundRequest = Util.extractRefundRequest(message.getPayload());

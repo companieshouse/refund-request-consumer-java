@@ -8,7 +8,7 @@ import uk.gov.companieshouse.requestrefund.consumer.apiclient.PaymentsApiClient;
 @Component
 public class RefundRequestServiceRouter {
 
-    PaymentsApiClient paymentsApiClient;
+    final PaymentsApiClient paymentsApiClient;
 
     public RefundRequestServiceRouter(PaymentsApiClient paymentsApiClient) {
         this.paymentsApiClient = paymentsApiClient;
