@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.requestrefund.consumer.kafka;
 
-import java.time.Duration;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 
@@ -20,11 +19,5 @@ final class KafkaUtils {
             count++;
         }
         return count;
-    }
-
-    static Duration kafkaPollingDuration() {
-        String kafkaPollingDuration = System.getenv().containsKey("KAFKA_POLLING_DURATION") ?
-                System.getenv("KAFKA_POLLING_DURATION") : "1000";
-        return Duration.ofMillis(Long.parseLong(kafkaPollingDuration));
     }
 }

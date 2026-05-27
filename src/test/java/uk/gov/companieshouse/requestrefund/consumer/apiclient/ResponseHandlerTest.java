@@ -24,10 +24,6 @@ class ResponseHandlerTest {
     private ApiErrorResponseException apiErrorResponseException;
     @Mock
     private URIValidationException uriValidationException;
-    @Mock
-    private IllegalArgumentException illegalArgumentException;
-    @Mock
-    private Throwable throwable;
 
     @ParameterizedTest
     @CsvSource({

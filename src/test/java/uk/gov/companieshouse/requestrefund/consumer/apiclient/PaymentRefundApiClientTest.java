@@ -1,5 +1,17 @@
 package uk.gov.companieshouse.requestrefund.consumer.apiclient;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import payments.refund_request;
+import uk.gov.companieshouse.api.InternalApiClient;
+import uk.gov.companieshouse.api.handler.exception.URIValidationException;
+import uk.gov.companieshouse.api.handler.payments.PrivatePaymentResourceHandler;
+import uk.gov.companieshouse.api.handler.payments.request.PaymentRefundRequest;
+import uk.gov.companieshouse.api.payments.RequestBodyPost;
+
+import java.util.function.Supplier;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -11,23 +23,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.function.Supplier;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-
-import payments.refund_request;
-import uk.gov.companieshouse.api.InternalApiClient;
-import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.api.handler.exception.URIValidationException;
-import uk.gov.companieshouse.api.handler.payments.PrivatePaymentResourceHandler;
-import uk.gov.companieshouse.api.handler.payments.request.PaymentRefundRequest;
-import uk.gov.companieshouse.api.payments.RequestBodyPost;
-
 class PaymentRefundApiClientTest {
 
-    private InternalApiClient internalApiClient;
     private ResponseHandler responseHandler;
     private PaymentsApiClient paymentRefundApiClient;
     private refund_request refundRequest;
@@ -38,7 +35,7 @@ class PaymentRefundApiClientTest {
     void setUp() {
         @SuppressWarnings("unchecked")
         Supplier<InternalApiClient> internalApiClientFactory = mock(Supplier.class);
-        internalApiClient = mock(InternalApiClient.class);
+        InternalApiClient internalApiClient = mock(InternalApiClient.class);
         responseHandler = mock(ResponseHandler.class);
         refundRequest = mock(refund_request.class);
         privatePaymentHandler = mock(PrivatePaymentResourceHandler.class);
@@ -112,14 +109,5 @@ class PaymentRefundApiClientTest {
             if (e.getCause() instanceof RuntimeException) throw (RuntimeException) e.getCause();
             throw new RuntimeException(e);
         }
-    }
-
-    // Mocks for handler classes
-    interface PrivatePaymentHandler {
-        RefundsRequestHandler createRefundsRequest(String uri, RequestBodyPost bodyPost);
-    }
-
-    interface RefundsRequestHandler {
-        void execute() throws ApiErrorResponseException, URIValidationException;
     }
 }

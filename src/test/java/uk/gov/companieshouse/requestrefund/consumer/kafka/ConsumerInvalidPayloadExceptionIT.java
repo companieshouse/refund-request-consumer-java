@@ -50,7 +50,7 @@ class ConsumerInvalidPayloadExceptionIT extends AbstractKafkaIT {
     }
 
     @BeforeEach
-    public void setupTopicsAndDrain() throws Exception {
+    public void setupTopicsAndDrain() {
         // Explicitly create topics before each test
         Properties props = new Properties();
         props.put("bootstrap.servers", kafka.getBootstrapServers());
