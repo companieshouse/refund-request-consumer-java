@@ -1,24 +1,24 @@
 # Define all hardcoded local variable and local variables looked up from data resources
 locals {
-  stack_name                  = "payments-service" # this must match the stack name the service deploys into
-  name_prefix                 = "${local.stack_name}-${var.environment}"
-  global_prefix               = "global-${var.environment}"
-  service_name                = "refund-request-consumer-java"
-  container_port              = "8081"
-  docker_repo                 = "refund-request-consumer-java"
-  kms_alias                   = "alias/${var.aws_profile}/environment-services-kms"
-  healthcheck_path            = "/healthcheck"
-  healthcheck_matcher         = "200"
-  vpc_name                    = local.stack_secrets["vpc_name"]
-  s3_config_bucket            = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
-  app_environment_filename    = "refund-request-consumer-java.env"
-  use_set_environment_files   = var.use_set_environment_files
-  application_subnet_ids      = data.aws_subnets.application.ids
+  stack_name                = "payments-service" # this must match the stack name the service deploys into
+  name_prefix               = "${local.stack_name}-${var.environment}"
+  global_prefix             = "global-${var.environment}"
+  service_name              = "refund-request-consumer-java"
+  container_port            = "8081"
+  docker_repo               = "refund-request-consumer-java"
+  kms_alias                 = "alias/${var.aws_profile}/environment-services-kms"
+  healthcheck_path          = "/healthcheck"
+  healthcheck_matcher       = "200"
+  vpc_name                  = local.stack_secrets["vpc_name"]
+  s3_config_bucket          = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
+  app_environment_filename  = "refund-request-consumer-java.env"
+  use_set_environment_files = var.use_set_environment_files
+  application_subnet_ids    = data.aws_subnets.application.ids
 
   stack_secrets              = jsondecode(data.vault_generic_secret.stack_secrets.data_json)
   application_subnet_pattern = local.stack_secrets["application_subnet_pattern"]
 
-  service_secrets            = jsondecode(data.vault_generic_secret.service_secrets.data_json)
+  service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
 
   # create a map of secret name => secret arn to pass into ecs service module
   # using the trimprefix function to remove the prefixed path from the secret name
@@ -43,8 +43,8 @@ locals {
   ]
 
   service_secrets_arn_map = {
-    for sec in module.secrets.secrets:
-      trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
+    for sec in module.secrets.secrets :
+    trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
   }
 
   service_secret_list = flatten([for key, value in local.service_secrets_arn_map :
@@ -58,9 +58,9 @@ locals {
   ]
 
   # secrets to go in list
-  task_secrets = concat(local.service_secret_list,local.global_secret_list)
+  task_secrets = concat(local.service_secret_list, local.global_secret_list)
 
-  task_environment = concat(local.ssm_global_version_map,local.ssm_service_version_map,[
+  task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { name : "PORT", value : local.container_port },
   ])
 }
