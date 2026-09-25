@@ -18,14 +18,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!--Companies House-->
-        <ch-dependency-bom.version>0.1.14</ch-dependency-bom.version>
-        <ch-test-bom.version>0.1.14</ch-test-bom.version>
-        <kafka-models.version>3.0.36</kafka-models.version>
-        <private-api-sdk-java.version>7.1.4</private-api-sdk-java.version>
-        <structured-logging.version>3.0.57</structured-logging.version>
+        <ch-dependency-bom.version>0.1.25</ch-dependency-bom.version>
+        <ch-test-bom.version>0.1.25</ch-test-bom.version>
+        <kafka-models.version>3.0.40</kafka-models.version>
+        <private-api-sdk-java.version>7.2.29</private-api-sdk-java.version>
         <!--External-->
-        <avro-version>1.12.1</avro-version>
-        <spring.boot.version>4.1.0</spring.boot.version>
+        <avro-version>1.12.2</avro-version>
+        <spring.boot.version>4.1.1</spring.boot.version>
         <testcontainers-bom.version>1.21.4</testcontainers-bom.version>
         <!--Test-->
         <wiremock.version>3.13.2</wiremock.version>
@@ -33,8 +32,8 @@
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
         <maven-dependency-plugin.version>3.10.0</maven-dependency-plugin.version>
-        <maven-failsafe-plugin.version>3.5.6</maven-failsafe-plugin.version>
-        <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.6.0</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
         <!--Other-->
         <skip.unit.tests>false</skip.unit.tests>
         <skip.integration.tests>false</skip.integration.tests>
