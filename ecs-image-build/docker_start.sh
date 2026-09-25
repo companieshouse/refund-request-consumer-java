@@ -1,4 +1,4 @@
-payme#!/bin/bash
+#!/bin/bash
 
 PORT=8081
 
