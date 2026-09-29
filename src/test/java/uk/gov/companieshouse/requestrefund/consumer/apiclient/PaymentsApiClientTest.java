@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-class PaymentRefundApiClientTest {
+class PaymentsApiClientTest {
 
     private ResponseHandler responseHandler;
     private PaymentsApiClient paymentRefundApiClient;
@@ -90,6 +90,13 @@ class PaymentRefundApiClientTest {
         refund_request req = mock(refund_request.class);
         when(req.getRefundAmount()).thenReturn(null);
         assertThrows(NullPointerException.class, () -> invokeConvertDecimalAmountToPennies(paymentRefundApiClient, req));
+    }
+
+    @Test
+    void convertDecimalAmountToPennies_amount_intMaxThrowsNumberFormatException() {
+        refund_request req = mock(refund_request.class);
+        when(req.getRefundAmount()).thenReturn("2147483648");
+        assertThrows(NumberFormatException.class, () -> invokeConvertDecimalAmountToPennies(paymentRefundApiClient, req));
     }
 
     @Test

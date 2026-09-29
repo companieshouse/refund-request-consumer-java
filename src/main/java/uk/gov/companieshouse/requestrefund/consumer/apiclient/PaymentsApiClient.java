@@ -58,10 +58,14 @@ public class PaymentsApiClient {
             throw new NullPointerException("Refund amount is null");
         }
         String amountString = refundRequest.getRefundAmount().replace(".", "");
-        if (!amountString.matches("\\d+")) {
-            throw new NumberFormatException("Refund amount is not a valid number");
+        try {
+            long amount = Long.parseLong(amountString);
+            if (amount > Integer.MAX_VALUE) {
+                throw new NumberFormatException("Refund amount exceeds maximum value");
+            }
+            return (int) amount;
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Refund amount is not a valid number: " + refundRequest.getRefundAmount());
         }
-
-        return Integer.parseInt(amountString);
     }
 }

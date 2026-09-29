@@ -13,7 +13,9 @@ import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.reflect.ReflectDatumWriter;
 import org.apache.avro.specific.SpecificDatumWriter;
+import org.apache.avro.util.ClassSecurityValidator;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -21,6 +23,15 @@ import payments.refund_request;
 import uk.gov.companieshouse.requestrefund .consumer.exception.InvalidPayloadException;
 
 class RefundRequestDeserialiserTest {
+
+    @BeforeAll
+    static void setupAvroSecurity() {
+        // Avro 1.12+ requires explicit class trust for serialization.
+        // This accepts all classes. Long term, we could consider using the schema registry to avoid
+        // runtime class validation entirely. However, that would make integration testing more complex.
+        ClassSecurityValidator.setGlobal((clazz -> true));
+    }
+
 
     @Test
     void testShouldSuccessfullyDeserialiseRefundRequest() throws IOException {
