@@ -26,6 +26,9 @@
         <avro-version>1.12.2</avro-version>
         <spring.boot.version>4.1.1</spring.boot.version>
         <testcontainers-bom.version>1.21.4</testcontainers-bom.version>
+        <!-- Spring boot 4.1.1 uses Otel v2.30.0, versions must match for compatibility -->
+        <opentelemetry-bom.version>2.30.0</opentelemetry-bom.version>
+        <opentelemetry-logback-appender.version>2.30.0-alpha</opentelemetry-logback-appender.version>
         <!--Test-->
         <wiremock.version>3.13.2</wiremock.version>
         <!--Plugin-->
@@ -63,6 +66,13 @@
                 <type>pom</type>
             </dependency>
             <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-bom</artifactId>
+                <version>${opentelemetry-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
                 <version>${testcontainers-bom.version}</version>
@@ -82,6 +92,16 @@
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>private-api-sdk-java</artifactId>
             <version>${private-api-sdk-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-opentelemetry</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+            <version>${opentelemetry-logback-appender.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.companieshouse</groupId>
